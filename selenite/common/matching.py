@@ -5,10 +5,10 @@ from typing import List, Dict
 
 
 class MatchingDictionaries:
-    def __init__(self, dictionaries: List[Dict[str, str]]):
+    def __init__(self, dictionaries: List[Dict]):
         self._dictionaries = dictionaries
 
-    def by_exact_dictionary(self, exact_dictionary: Dict[str, str]) -> List[Dict[str, str]]:
+    def by_exact_dictionary(self, exact_dictionary: Dict) -> List[Dict]:
         return [
             d for d in self._dictionaries
             if all(
@@ -18,7 +18,7 @@ class MatchingDictionaries:
             )
         ]
 
-    def by_partial_dictionary(self, partial_dictionary: Dict[str, str]) -> List[Dict[str, str]]:
+    def by_partial_dictionary(self, partial_dictionary: Dict) -> List[Dict]:
         patterns = {
             key: re.compile(pattern)
             for key, pattern in partial_dictionary.items()
@@ -61,7 +61,7 @@ class MatchingLists:
         ]
 
 
-def matching_dictionaries(dictionaries: List[Dict[str, str]]) -> MatchingDictionaries:
+def matching_dictionaries(dictionaries: List[Dict]) -> MatchingDictionaries:
     return MatchingDictionaries(dictionaries)
 
 
