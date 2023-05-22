@@ -51,7 +51,6 @@ class HttpDecorator:
                 res = requests.Session().send(prepped, verify=False)
                 res.encoding = res.apparent_encoding
             except RequestException as e:
-                logger.error(f'Request failed: {e}')
                 raise RequestException(f'Request failed: {e}')
             else:
                 return res
