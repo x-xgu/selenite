@@ -44,14 +44,25 @@ factory: Dict[
 
 
 class DBEngine:
-    def __init__(self, *, db_type: DbType, host: str = None, port: int = None, username: str = None, password: str = None) -> None:
+    def __init__(
+            self,
+            *,
+            db_type: DbType,
+            host: str = None,
+            port: int = None,
+            username: str = None,
+            password: str = None
+    ) -> None:
         self._db_type = db_type
         self._host = host
         self._port = port
         self._username = username
         self._password = password
 
-    def engine(self, db_name: str) -> Engine:
+    def engine(
+            self,
+            db_name: str
+    ) -> Engine:
         return factory[self._db_type](
             DBConfig(
                 self._host,
