@@ -8,10 +8,10 @@ from selenite.conf.protocol.socket import SocketConfig
 class ShipAIS:
     def __init__(self, config: SocketConfig) -> None:
         self._socket = config
-        self.mmsi: int = 0
-        self.course: float = 0
-        self.speed: float = 0
-        self.position: Tuple[float, float] = (0, 0)
+        self.mmsi: int = ...
+        self.course: float = ...
+        self.speed: float = ...
+        self.position: Tuple[float, float] = ...
 
     def encode_msg(self) -> Any:
         lon, lat = self.position
