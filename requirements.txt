@@ -1,0 +1,17 @@
+allure-pytest
+pytest
+pytest-html
+pytest-rerunfailures
+pytest-ordering
+pytest-xdist
+selene==2.0.0rc2
+pydantic
+PyYAML
+requests
+loguru
+ddddocr
+csvmapper
+scikit-image
+pyais
+sqlalchemy
+psycopg2
