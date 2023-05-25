@@ -5,7 +5,7 @@ from typing import Union, Tuple
 
 import ddddocr
 from PIL import Image
-from selene import Element, query
+from selene import Element, query, be
 from skimage.metrics import structural_similarity as ssim
 
 from selenite import common
@@ -40,6 +40,17 @@ def get_canvas_bytes(
     img_base64 = img_data.split(',')[1]
     img_bytes = base64.b64decode(img_base64)
     return img_bytes
+
+
+def save_canvas_bytes_to_file(
+        element: Element,
+        path: Union[str, Path],
+        add_background: bool = False
+) -> None:
+    element.matching(be.visible)
+    image_bytes = get_canvas_bytes(element, add_background)
+    with open(path, 'wb') as f:
+        f.write(image_bytes)
 
 
 def pic_compare_with_ssim(
