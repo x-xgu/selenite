@@ -44,6 +44,9 @@ factory: Dict[
 
 
 class DBEngine:
+    """
+    Database engine
+    """
     def __init__(
             self,
             *,
@@ -63,6 +66,9 @@ class DBEngine:
             self,
             db_name: str
     ) -> Engine:
+        """
+        Create database engine
+        """
         return factory[self._db_type](
             DBConfig(
                 self._host,
