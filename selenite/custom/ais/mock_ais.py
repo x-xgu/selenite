@@ -9,6 +9,7 @@ class ShipAIS:
     """
     Mock AIS ship
     """
+
     def __init__(self, config: SocketConfig) -> None:
         self._socket: SocketConfig = config
 
@@ -28,15 +29,7 @@ class ShipAIS:
         Encode AIS message
         """
         lon, lat = self.position
-        msg = {
-            'mmsi': self.mmsi,
-            'shipname': self.name,
-            'type': 1,
-            'course': self.course,
-            'speed': self.speed,
-            'lon': lon,
-            'lat': lat
-        }
+        msg = {'mmsi': self.mmsi, 'shipname': self.name, 'type': 1, 'course': self.course, 'speed': self.speed, 'lon': lon, 'lat': lat}
         return encode_dict(
             msg,
             talker_id='AIVDM'
