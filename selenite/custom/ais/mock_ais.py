@@ -1,5 +1,6 @@
 from typing import Any, Tuple
 
+from loguru import logger
 from pyais import encode_dict
 
 from selenite.conf.protocol.socket import SocketConfig
@@ -30,6 +31,7 @@ class ShipAIS:
         """
         lon, lat = self.position
         msg = {'mmsi': self.mmsi, 'shipname': self.name, 'type': 1, 'course': self.course, 'speed': self.speed, 'lon': lon, 'lat': lat}
+        logger.debug(f'Encode AIS message: {msg}')
         return encode_dict(
             msg,
             talker_id='AIVDM'
@@ -39,4 +41,5 @@ class ShipAIS:
         """
         Send AIS message
         """
+        logger.debug(f'Send AIS message')
         self._socket.send_msg(self.encode_msg())
