@@ -1,7 +1,8 @@
-from typing import Optional, Any
+from typing import Optional
 
 from loguru import logger
 from selene import browser
+from selene.core.exceptions import TimeoutException
 
 from selenite.common import predicate
 
@@ -48,16 +49,18 @@ class WebPredicate:
         return failure_with_hook(predicate.includes(obj)(container), msg)
 
 
+browser_without_timeout = browser.with_(timeout=0)
+
+
 def failure_with_hook(condition: bool, msg: Optional[str] = None) -> None:
     """
     Raises AssertionError if condition is False
     """
-    def fn(entity: Any):
-        if not condition:
-            logger.error(msg)
-            raise AssertionError(msg)
+    failure = TimeoutException(f'\nReason: {msg}')
 
-    browser.wait.for_(fn)
+    if not condition:
+        logger.error(msg)
+        raise browser_without_timeout.wait.hook_failure(failure)
 
 
 web_assert = WebPredicate()
