@@ -1,5 +1,6 @@
 from typing import Optional, Any
 
+from loguru import logger
 from selene import browser
 
 from selenite.common import predicate
@@ -18,26 +19,42 @@ class WebPredicate:
 
     @staticmethod
     def is_true(condition: bool, msg: Optional[str] = None) -> None:
+        """
+        Asserts that condition is True
+        """
         return failure_with_hook(predicate.is_truthy(condition), msg or DEFAULT_MSG_TRUE)
 
     @staticmethod
     def is_false(condition: bool, msg: Optional[str] = None) -> None:
+        """
+        Asserts that condition is False
+        """
         return failure_with_hook(predicate.is_truthy(not condition), msg or DEFAULT_MSG_FALSE)
 
     @staticmethod
     def is_equal(actual: object, expected: object, msg: Optional[str] = None) -> None:
+        """
+        Asserts that actual value is equal to expected value
+        """
         msg = msg or DEFAULT_MSG_EQUAL.format(actual=actual, expected=expected)
         return failure_with_hook(predicate.equals(expected)(actual), msg)
 
     @staticmethod
     def is_in(obj: object, container: object, msg: Optional[str] = None) -> None:
+        """
+        Asserts that object is in container
+        """
         msg = msg or DEFAULT_MSG_IN.format(obj=obj, container=container)
         return failure_with_hook(predicate.includes(obj)(container), msg)
 
 
 def failure_with_hook(condition: bool, msg: Optional[str] = None) -> None:
+    """
+    Raises AssertionError if condition is False
+    """
     def fn(entity: Any):
         if not condition:
+            logger.error(msg)
             raise AssertionError(msg)
 
     browser.wait.for_(fn)

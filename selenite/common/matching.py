@@ -5,10 +5,16 @@ from typing import List, Dict
 
 
 class MatchingDictionaries:
+    """
+    A class to match dictionaries by exact or partial match.
+    """
     def __init__(self, dictionaries: List[Dict]):
         self._dictionaries = dictionaries
 
     def by_exact_dictionary(self, exact_dictionary: Dict) -> List[Dict]:
+        """
+        Returns a list of dictionaries that match the exact dictionary.
+        """
         return [
             d for d in self._dictionaries
             if all(
@@ -19,6 +25,9 @@ class MatchingDictionaries:
         ]
 
     def by_partial_dictionary(self, partial_dictionary: Dict) -> List[Dict]:
+        """
+        Returns a list of dictionaries that match the partial dictionary.
+        """
         patterns = {
             key: re.compile(pattern)
             for key, pattern in partial_dictionary.items()
@@ -33,11 +42,16 @@ class MatchingDictionaries:
 
 
 class MatchingLists:
-
+    """
+    A class to match lists by exact or partial match.
+    """
     def __init__(self, lists: List[List]):
         self._lists = lists
 
     def by_exact_list(self, exact_list: List) -> List[List]:
+        """
+        Returns a list of lists that match the exact list.
+        """
         return [
             _ for _ in self._lists
             if all(
@@ -47,6 +61,9 @@ class MatchingLists:
         ]
 
     def by_partial_list(self, partial_list: List) -> List[List]:
+        """
+        Returns a list of lists that match the partial list.
+        """
         regex_list = [
             re.compile(pattern)
             if isinstance(pattern, str) else pattern
@@ -62,8 +79,14 @@ class MatchingLists:
 
 
 def matching_dictionaries(dictionaries: List[Dict]) -> MatchingDictionaries:
+    """
+    Matches dictionaries by exact or partial match.
+    """
     return MatchingDictionaries(dictionaries)
 
 
 def matching_lists(lists: List[List]) -> MatchingLists:
+    """
+    Matches lists by exact or partial match.
+    """
     return MatchingLists(lists)

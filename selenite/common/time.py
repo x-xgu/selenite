@@ -12,12 +12,18 @@ UTC_DATETIME = '%Y-%m-%dT%H:%M:%S.000Z'
 def get_timestamp(
 
 ) -> int:
+    """
+    Get current timestamp
+    """
     return int(datetime.datetime.timestamp(datetime.datetime.now()))
 
 
 def get_utc_datetime(
 
 ) -> datetime.datetime:
+    """
+    Get current UTC datetime
+    """
     return datetime.datetime.utcnow()
 
 
@@ -25,18 +31,27 @@ def format_datetime(
         dt: datetime.datetime,
         time_format: str
 ) -> str:
+    """
+    Format datetime to string
+    """
     return dt.strftime(time_format)
 
 
 def get_current_date(
 
 ) -> str:
+    """
+    Get current date
+    """
     return datetime.datetime.now().date().isoformat()
 
 
 def get_current_time(
 
 ) -> str:
+    """
+    Get current time
+    """
     return datetime.datetime.now().strftime(DATETIME_FULL)
 
 
@@ -44,6 +59,9 @@ def add_days(
         days: int,
         base_time: str = None
 ) -> str:
+    """
+    Add days to base time
+    """
     base_time = get_current_date() if not base_time else base_time
     date = datetime.datetime.fromisoformat(base_time)
     new_date = date + datetime.timedelta(days=days)
@@ -55,6 +73,9 @@ def add_hours_and_days(
         days: int,
         base_time: str = None
 ) -> str:
+    """
+    Add hours and days to base time
+    """
     base_time = get_current_time() if not base_time else base_time
     dt = datetime.datetime.strptime(base_time, DATETIME_FULL)
     new_dt = dt + datetime.timedelta(hours=hours, days=days)
@@ -65,6 +86,9 @@ def wait(
         seconds: float,
         show_with_terminal: bool = False
 ) -> None:
+    """
+    Wait for seconds
+    """
     if not show_with_terminal:
         time.sleep(seconds)
     else:
