@@ -11,6 +11,9 @@ Scope = Literal['session', 'package', 'module', 'class', 'method', 'function']
 
 
 class SeleneSettings(BaseSettings):
+    """
+    Selene settings
+    """
     browser_name: BrowserType = ''
     browser_version: str = ''
     browser_load_strategy: str = ''
@@ -45,6 +48,9 @@ class SeleneSettings(BaseSettings):
             cls,
             env: Union[str, Path]
     ) -> SeleneSettings:
+        """
+        Get settings in context
+        """
         return cls(
             _env_file=env
         )

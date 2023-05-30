@@ -8,6 +8,8 @@ from loguru import logger
 from requests import Request, RequestException
 from urllib3.exceptions import InsecureRequestWarning
 
+LOG_TAG = 'HTTP_DECORATOR'
+
 urllib3.disable_warnings(InsecureRequestWarning)
 
 RequestMethod = Literal['get', 'post', 'put', 'delete', 'head', 'options', 'trace']
@@ -51,8 +53,10 @@ class HttpDecorator:
                 res = requests.Session().send(prepped, verify=False)
                 res.encoding = res.apparent_encoding
             except RequestException as e:
+                logger.error(f'[{LOG_TAG}] Request failed: {e}')
                 raise RequestException(f'Request failed: {e}')
             else:
+                logger.debug(f'[{LOG_TAG}] Request success: {res.status_code}')
                 return res
 
         return wrapper
