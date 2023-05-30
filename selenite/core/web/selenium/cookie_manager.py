@@ -4,6 +4,9 @@ from selene import Browser
 
 
 def current_browser_cookie(browser: Browser) -> str:
+    """
+    Get current browser cookie
+    """
     cookies_dict: Dict[str, str] = {}
 
     for cookie in browser.config.driver.get_cookies():

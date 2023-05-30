@@ -32,6 +32,10 @@ def get_canvas_bytes(
         element: Element,
         add_background: bool = False
 ) -> bytes:
+    """
+    Get canvas bytes
+    """
+    element.matching(be.visible)
     img_data = element.execute_script(
         TRANSLATE_CANVAS_TO_PNG
         if not add_background
@@ -47,6 +51,9 @@ def save_canvas_bytes_to_file(
         path: Union[str, Path],
         add_background: bool = False
 ) -> None:
+    """
+    Save canvas bytes to file
+    """
     element.matching(be.visible)
     image_bytes = get_canvas_bytes(element, add_background)
     with open(path, 'wb') as f:
@@ -57,6 +64,9 @@ def pic_compare_with_ssim(
         image1: bytes,
         image2: bytes
 ) -> float:
+    """
+    Compare two images with ssim
+    """
     score, _ = ssim(
         common.convert.bytes_to_numpy(image1),
         common.convert.bytes_to_numpy(image2),
@@ -69,6 +79,9 @@ def compare_canvas_similarity(
         canvas: Element,
         origin_image: Union[bytes, str, Path]
 ) -> float:
+    """
+    Compare canvas similarity with origin image
+    """
     img_bytes = get_canvas_bytes(canvas)
     if isinstance(origin_image, (str, Path)):
         with open(origin_image, 'rb') as f:
@@ -81,6 +94,9 @@ def recognize_img_text(
         img_bytes: bytes,
         recognize_area: Tuple[int, int, int, int] = None
 ) -> str:
+    """
+    Recognize image text
+    """
     with Image.open(BytesIO(img_bytes)) as img:
         recognize_part = img.crop(recognize_area) if recognize_area else img
         ocr = ddddocr.DdddOcr(show_ad=False)
@@ -94,6 +110,9 @@ def recognize_canvas_text_with_area(
         right: float = 1,
         lower: float = 1
 ) -> str:
+    """
+    Recognize canvas text with area
+    """
     width_str = element.get(query.attribute('width'))
     height_str = element.get(query.attribute('height'))
     if width_str.isdigit() and height_str.isdigit():
