@@ -35,7 +35,7 @@ def get_canvas_bytes(
     """
     Get canvas bytes
     """
-    element.matching(be.visible)
+    element.wait_until(be.visible)
     img_data = element.execute_script(
         TRANSLATE_CANVAS_TO_PNG
         if not add_background
@@ -54,7 +54,7 @@ def save_canvas_bytes_to_file(
     """
     Save canvas bytes to file
     """
-    element.matching(be.visible)
+    element.wait_until(be.visible)
     image_bytes = get_canvas_bytes(element, add_background)
     with open(path, 'wb') as f:
         f.write(image_bytes)
