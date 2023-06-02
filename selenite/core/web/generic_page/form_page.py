@@ -258,6 +258,22 @@ class FormsPage(FormPage):
         logger.debug(f'[{LOG_TAG}] Matching dictionaries in table by dictionaries: {dictionaries}, matched list: {matched_list}')
         return matched_list
 
+    def matching_dictionaries_in_table_by_partial_dictionaries(
+            self,
+            origin_dictionaries: List[Dict],
+            dictionaries: List[Dict],
+            /
+    ) -> List[Dict]:
+        """
+        Matching dictionaries in table by partial dictionaries
+        """
+        matched_list = []
+        for dictionary in dictionaries:
+            tmp = common.matching.matching_dictionaries(origin_dictionaries).by_partial_dictionary(dictionary)
+            matched_list.extend(tmp) if tmp else ...
+        logger.debug(f'[{LOG_TAG}] Matching dictionaries in table by dictionaries: {dictionaries}, matched list: {matched_list}')
+        return matched_list
+
     def matching_lists_in_table_by_lists(
             self,
             origin_lists: List[List],
@@ -270,6 +286,22 @@ class FormsPage(FormPage):
         matched_list = []
         for lst in lists:
             tmp = common.matching.matching_lists(origin_lists).by_exact_list(lst)
+            matched_list.extend(tmp) if tmp else ...
+        logger.debug(f'[{LOG_TAG}] Matching lists in table by lists: {lists}, matched list: {matched_list}')
+        return matched_list
+
+    def matching_lists_in_table_by_partial_lists(
+            self,
+            origin_lists: List[List],
+            lists: List[List],
+            /
+    ) -> List[List]:
+        """
+        Matching lists in table by partial lists
+        """
+        matched_list = []
+        for lst in lists:
+            tmp = common.matching.matching_lists(origin_lists).by_partial_list(lst)
             matched_list.extend(tmp) if tmp else ...
         logger.debug(f'[{LOG_TAG}] Matching lists in table by lists: {lists}, matched list: {matched_list}')
         return matched_list
@@ -289,11 +321,41 @@ class FormsPage(FormPage):
         )
         return matched_list
 
+    def should_contain_sub_partial_dictionaries(self, dictionaries: List[Dict]) -> List:
+        """
+        Check if table should contain sub partial dictionaries
+        """
+        matched_list = self.matching_dictionaries_in_table_by_partial_dictionaries(
+            self.get_table_all_info_with_dictionaries(),
+            dictionaries
+        )
+        logger.debug(f'[{LOG_TAG}] Should contain sub dictionaries: {dictionaries}, matched list: {matched_list}')
+        web_assert.is_equal(
+            len(dictionaries),
+            len(matched_list)
+        )
+        return matched_list
+
     def should_contain_sub_lists(self, lists: List[List]) -> List:
         """
         Check if table should contain sub lists
         """
         matched_list = self.matching_lists_in_table_by_lists(
+            self.get_table_all_info_with_lists(),
+            lists
+        )
+        logger.debug(f'[{LOG_TAG}] Should contain sub lists: {lists}, matched list: {matched_list}')
+        web_assert.is_equal(
+            len(lists),
+            len(matched_list)
+        )
+        return matched_list
+
+    def should_contain_sub_partial_lists(self, lists: List[List]) -> List:
+        """
+        Check if table should contain sub partial lists
+        """
+        matched_list = self.matching_lists_in_table_by_partial_lists(
             self.get_table_all_info_with_lists(),
             lists
         )
