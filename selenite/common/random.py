@@ -22,6 +22,7 @@ def random_float(
     """
     Generate a random float between min_value and max_value
     """
+
     def _random_float_to_str(num):
         return '{:.{dp}f}'.format(num, dp=num_decimal_places)
 
@@ -70,4 +71,37 @@ def random_chinese(
     return ''.join(
         chr(random.randint(0x4e00, 0x9fa5))
         for _ in range(length)
+    )
+
+
+def random_number_string(
+        length: int,
+        min_value: Union[int, float],
+        max_value: Union[int, float],
+        separator: str
+) -> str:
+    def get_decimal_places(value: float) -> int:
+        if isinstance(value, float):
+            return len(str(value).split(".")[1])
+        return 0
+
+    if isinstance(min_value, float) or isinstance(max_value, float):
+        random_fn = random_float
+        params = {
+            'min_value': min_value,
+            'max_value': max_value,
+            'num_decimal_places': max(get_decimal_places(min_value), get_decimal_places(max_value)),
+            'to_str': True
+        }
+    else:
+        random_fn = random_int
+        params = {
+            'min_value': min_value,
+            'max_value': max_value
+        }
+    return separator.join(
+        [
+            str(random_fn(**params))
+            for _ in range(length)
+        ]
     )

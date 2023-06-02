@@ -16,3 +16,4 @@ pyais
 sqlalchemy
 psycopg2
 stomp.py
+redis
