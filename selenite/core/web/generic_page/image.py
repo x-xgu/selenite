@@ -5,7 +5,8 @@ from typing import Union, Tuple
 
 import ddddocr
 from PIL import Image
-from selene import Element, query, be
+from selene import Element, query, be, browser
+from selenium.webdriver import ActionChains
 from skimage.metrics import structural_similarity as ssim
 
 from selenite import common
@@ -128,3 +129,16 @@ def recognize_canvas_text_with_area(
         return text
     else:
         return ''
+
+
+def move_mouse_to_top_left_of_element(
+        element: Element
+) -> ActionChains:
+    """
+    Move mouse to top left of element
+    """
+    return ActionChains(browser.driver).move_to_element_with_offset(
+        to_element=element.locate(),
+        xoffset=-0.5 * element.get(query.size)['width'],
+        yoffset=-0.5 * element.get(query.size)['height']
+    )
