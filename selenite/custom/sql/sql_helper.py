@@ -1,5 +1,5 @@
 import warnings
-from typing import Callable
+from typing import Callable, List, Any
 
 from sqlalchemy import Engine
 from sqlalchemy.exc import SQLAlchemyError
@@ -51,3 +51,29 @@ class SQLHelper:
             self.rollback()
             warnings.warn(f'Error occurs: {e}')
             raise
+
+    def add_data_to_table(
+            self,
+            data: List[object]
+    ) -> None:
+        """
+        Add data to table
+        """
+        self.with_safety_commit(
+            lambda _:
+            self.session.add_all(_),
+            data
+        )
+
+    def delete_all_data_in_table(
+            self,
+            table_name: Any
+    ) -> None:
+        """
+        Delete all data in table
+        """
+        self.with_safety_commit(
+            lambda _:
+            self.session.query(_).delete(),
+            table_name
+        )
