@@ -1,3 +1,5 @@
+from urllib.parse import urljoin
+
 from selenium import webdriver
 
 from selenite import common
@@ -17,7 +19,7 @@ def _chrome_options_with_automation():
     return options
 
 
-def chrome_options_settings(setting: SeleneSettings):
+def _chrome_options_settings(setting: SeleneSettings):
     options = _chrome_options_with_automation()
 
     options.browser_version = setting.browser_version
@@ -33,10 +35,10 @@ def chrome_options_settings(setting: SeleneSettings):
     return options
 
 
-def selenoid_chrome_options(setting: SeleneSettings):
+def _selenoid_chrome_options(setting: SeleneSettings):
     setting.remote_videoName = f'video_{common.time.get_current_time()}.mp4'
 
-    options = chrome_options_settings(setting)
+    options = _chrome_options_settings(setting)
 
     options.set_capability('browserName', setting.browser_name)
     options.set_capability('browserVersion', setting.browser_version)
@@ -51,3 +53,14 @@ def selenoid_chrome_options(setting: SeleneSettings):
     )
 
     return options
+
+
+def chrome_driver(setting: SeleneSettings):
+    return lambda: (
+        webdriver.Chrome(options=_chrome_options_settings(setting))
+        if not setting.remote_url
+        else webdriver.Remote(
+            command_executor=urljoin(setting.remote_url, '/wd/hub'),
+            options=_selenoid_chrome_options(setting)
+        )
+    )
