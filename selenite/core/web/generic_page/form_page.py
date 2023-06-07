@@ -168,7 +168,7 @@ class FormPage(Entity):
 
 
 class FormsPage(FormPage):
-    check_next_page_enable_function: Callable = None
+    check_next_page_disable_function: Callable = None
 
     next_page_button: Element = None
     page_index_button: Collection = None
@@ -190,7 +190,7 @@ class FormsPage(FormPage):
         Check and click next page button
         """
         logger.debug(f'[{LOG_TAG}] Check and click next page button')
-        enabled = not self.check_next_page_enable_function(self.next_page_button)
+        enabled = not self.check_next_page_disable_function(self.next_page_button)
         self.next_page_button.click() if enabled else ...
         time.sleep(0.5)
         return enabled
