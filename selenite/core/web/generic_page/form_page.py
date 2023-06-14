@@ -141,6 +141,14 @@ class FormPage(Entity):
         web_assert.is_true(self.contains_sub_list(lst))
         return self
 
+    def should_not_contain_sub_list(self, lst: list) -> FormPage:
+        """
+        Check if table should not contain sub list
+        """
+        logger.debug(f'[{LOG_TAG}] Should contain sub list: {lst}')
+        web_assert.is_false(self.contains_sub_list(lst))
+        return self
+
     def should_have_text(self, text: str) -> FormPage:
         """
         Check if table should have text
@@ -149,12 +157,13 @@ class FormPage(Entity):
         self.tbody.by(have.text(text)).should(have.size_greater_than_or_equal(1))
         return self
 
-    def should_have_text_by_index(self, index: int, text: str) -> FormPage:
+    def should_have_text_by_index(self, index: int, attribute: str, value: str) -> FormPage:
         """
         Check if table should have text by index
         """
-        logger.debug(f'[{LOG_TAG}] Should have text by index: {index}, text: {text}')
-        self.tbody.element(index).should(have.text(text))
+        logger.debug(f'[{LOG_TAG}] Should have text by index: {index}, attribute: {attribute}, value: {value}')
+        text = self.get_row_attribute_by_index(index, attribute)
+        web_assert.is_equal(text, value)
         return self
 
     def should_have_row_attribute(self, row_keyword: Union[str, list], attribute: str, value: str) -> FormPage:
