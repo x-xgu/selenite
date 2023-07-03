@@ -15,6 +15,8 @@ def _chrome_options_with_automation():
     options = webdriver.ChromeOptions()
     [options.add_argument(_) for _ in ARGS]
     options.add_experimental_option('useAutomationExtension', False)
+    options.add_experimental_option('credentials_enable_service', False)
+    options.add_experimental_option('profile.password_manager_enabled', False)
     options.add_experimental_option('excludeSwitches', ['enable-automation'])
     return options
 
